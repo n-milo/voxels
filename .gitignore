@@ -1,0 +1,9 @@
+# Xcode Stuff
+*.xcscheme
+*.pbxproj
+*.plist
+*.xcodeproj
+
+# General stuff
+*.swp
+*.backup
