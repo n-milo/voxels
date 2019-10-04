@@ -2,8 +2,9 @@
 
 #include <OpenGL/gl.h>
 #include <GLUT/GLUT.h>
-#include "window.h"
 #include <cmath>
+#include "window.h"
+#include "block.h"
 
 void color(float r, float g, float b, float c) {
 	glColor3f(r * c, g * c, b * c);
@@ -12,42 +13,43 @@ void color(float r, float g, float b, float c) {
 void drawBlock(int x, int y, int z, float r, float g, float b) {
 	color(r, g, b, 0.75f);
 	glNormal3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(1.0f + x, -1.0f + y, -1.0f + z);
-	glVertex3f(-1.0f + x, -1.0f + y, -1.0f + z);
-	glVertex3f(-1.0f + x, 1.0f + y, -1.0f + z);
-	glVertex3f(1.0f + x, 1.0f + y, -1.0f + z);
+	glVertex3f(0.5f + x, -0.5f + y, -0.5f + z);
+	glVertex3f(-0.5f + x, -0.5f + y, -0.5f + z);
+	glVertex3f(-0.5f + x, 0.5f + y, -0.5f + z);
+	glVertex3f(0.5f + x, 0.5f + y, -0.5f + z);
 	
 	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-1.0f + x, -1.0f + y, 1.0f + z);
-	glVertex3f(1.0f + x, -1.0f + y, 1.0f + z);
-	glVertex3f(1.0f + x, 1.0f + y, 1.0f + z);
-	glVertex3f(-1.0f + x, 1.0f + y, 1.0f + z);
+	glVertex3f(-0.5f + x, -0.5f + y, 0.5f + z);
+	glVertex3f(0.5f + x, -0.5f + y, 0.5f + z);
+	glVertex3f(0.5f + x, 0.5f + y, 0.5f + z);
+	glVertex3f(-0.5f + x, 0.5f + y, 0.5f + z);
 	
 	color(r, g, b, 0.5f);
 	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f + x, -1.0f + y, 1.0f + z);
-	glVertex3f(1.0f + x, -1.0f + y, -1.0f + z);
-	glVertex3f(1.0f + x, 1.0f + y, -1.0f + z);
-	glVertex3f(1.0f + x, 1.0f + y, 1.0f + z);
+	glVertex3f(0.5f + x, -0.5f + y, 0.5f + z);
+	glVertex3f(0.5f + x, -0.5f + y, -0.5f + z);
+	glVertex3f(0.5f + x, 0.5f + y, -0.5f + z);
+	glVertex3f(0.5f + x, 0.5f + y, 0.5f + z);
 	
 	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(-1.0f + x, -1.0f + y, -1.0f + z);
-	glVertex3f(-1.0f + x, -1.0f + y, 1.0f + z);
-	glVertex3f(-1.0f + x, 1.0f + y, 1.0f + z);
-	glVertex3f(-1.0f + x, 1.0f + y, -1.0f + z);
+	glVertex3f(-0.5f + x, -0.5f + y, -0.5f + z);
+	glVertex3f(-0.5f + x, -0.5f + y, 0.5f + z);
+	glVertex3f(-0.5f + x, 0.5f + y, 0.5f + z);
+	glVertex3f(-0.5f + x, 0.5f + y, -0.5f + z);
 	
 	color(r, g, b, 1.f);
 	glNormal3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(-1.0f + x, -1.0f + y, -1.0f + z);
-	glVertex3f(1.0f + x, -1.0f + y, -1.0f + z);
-	glVertex3f(1.0f + x, -1.0f + y, 1.0f + z);
-	glVertex3f(-1.0f + x, -1.0f + y, 1.0f + z);
+	glVertex3f(-0.5f + x, -0.5f + y, -0.5f + z);
+	glVertex3f(0.5f + x, -0.5f + y, -0.5f + z);
+	glVertex3f(0.5f + x, -0.5f + y, 0.5f + z);
+	glVertex3f(-0.5f + x, -0.5f + y, 0.5f + z);
 	
 	glNormal3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(1.0f + x, 1.0f + y, -1.0f + z);
-	glVertex3f(-1.0f + x, 1.0f + y, -1.0f + z);
-	glVertex3f(-1.0f + x, 1.0f + y, 1.0f + z);
-	glVertex3f(1.0f + x, 1.0f + y, 1.0f + z);
+	glVertex3f(0.5f + x, 0.5f + y, -0.5f + z);
+	glVertex3f(-0.5f + x, 0.5f + y, -0.5f + z);
+	glVertex3f(-0.5f + x, 0.5f + y, 0.5f + z);
+	glVertex3f(0.5f + x, 0.5f + y, 0.5f + z);
+
 }
 
 int main(int argc, const char * argv[]) {
@@ -56,6 +58,9 @@ int main(int argc, const char * argv[]) {
 	glClearColor(1, 0, 0, 1);
 	glEnable(GL_DEPTH_TEST);
 	float t = 0;
+	
+	Chunk chunk;
+	
 	while (!window::shouldClose()) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
@@ -69,7 +74,9 @@ int main(int argc, const char * argv[]) {
 		for (int z = 0; z < 16; z++) {
 			for (int y = 0; y < 16; y++) {
 				for (int x = 0; x < 16; x++) {
-					drawBlock(x, y, z, 1, 1, 1);
+					if (chunk.blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type) {
+						drawBlock(x, y, z, 1, 1, 1);
+					}
 				}
 			}
 		}
