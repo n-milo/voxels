@@ -10,7 +10,33 @@ void color(float r, float g, float b, float c) {
 	glColor3f(r * c, g * c, b * c);
 }
 
-void drawBlock(int x, int y, int z, float r, float g, float b) {
+int vertexAO(int side1, int side2, int corner) {
+	if (side1 && side2) {
+		return 0;
+	}
+	return 3 - (side1 + side2 + corner);
+}
+
+void applyAO(Chunk &chunk, int x, int y, int z, int axis, int s1, int s2, int dir) {
+	int ao;
+	switch (axis) {
+		case 0:
+			ao = vertexAO(chunk.getType(x + dir, y + s1, z), chunk.getType(x + dir, y, z + s2), chunk.getType(x + dir, y + s1, z + s2));
+			break;
+		default:
+		case 1:
+			ao = vertexAO(chunk.getType(x + s1, y + dir, z), chunk.getType(x, y + dir, z + s2), chunk.getType(x + s1, y + dir, z + s2));
+			break;
+		case 2:
+			ao = vertexAO(chunk.getType(x + s1, y, z + dir), chunk.getType(x, y + s2, z + dir), chunk.getType(x + s1, y + s2, z + dir));
+			break;
+	}
+	
+	//float shade = ao / 3.0f;
+	//glColor3f(shade, shade, shade);
+}
+
+void drawBlock(Chunk &chunk, int x, int y, int z, float r, float g, float b) {
 	color(r, g, b, 0.75f);
 	glNormal3f(0.0f, 0.0f, -1.0f);
 	glVertex3f(0.5f + x, -0.5f + y, -0.5f + z);
@@ -86,7 +112,7 @@ int main(int argc, const char * argv[]) {
 	
 	FOR3(x, y, z, CHUNK_SIZE) {
 		if (chunk.blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type) {
-			drawBlock(x, y, z, 1, 1, 1);
+			drawBlock(chunk, x, y, z, 1, 1, 1);
 		}
 	}
 	
@@ -108,9 +134,11 @@ int main(int argc, const char * argv[]) {
 		glPushMatrix();
 		gluPerspective(70, 640.f / 480.f, 0.1f, 1000.f);
 		
+		
 		glPushMatrix();
 		// spins the camera around the world (with t being the angle around the world), and makes it look at the center of the world
-		gluLookAt(CHUNK_SIZE * cos(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE * 1.25f + CHUNK_SIZE * 2.5f * sin(yAng), CHUNK_SIZE * sin(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, 0, 1, 0);
+		float dist = CHUNK_SIZE * cos(yAng);
+		gluLookAt(dist * cos(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE * 1.25f + CHUNK_SIZE * 2.5f * sin(yAng), dist * sin(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, 0, 1, 0);
 		
 		glCallList(index);
 		

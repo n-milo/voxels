@@ -6,7 +6,6 @@
 class GLFWwindow;
 
 namespace window {
-	
 	void create(int width, int height, std::string title);
 	void update();
 	void destroy();
@@ -15,8 +14,6 @@ namespace window {
 	float getDeltaTime();
 	
 	GLFWwindow* getWindow();
-	
-	
 }
 
 #endif

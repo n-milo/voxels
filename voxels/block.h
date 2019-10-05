@@ -18,6 +18,8 @@ for (int z = 0; z < mz; z++) \
 for (int y = 0; y < my; y++) \
 for (int x = 0; x < mx; x++)
 
+#define BLOCK(x, y, z) blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE]
+
 #include <cstdint>
 
 struct Block {
@@ -28,6 +30,10 @@ struct Chunk {
 	Chunk();
 	~Chunk();
 	Block* blocks;
+	
+	int getType(int x, int y, int z);
+	void setBlock(Block block, int x, int y, int z);
+	bool inRange(int x, int y, int z);
 };
 
 
