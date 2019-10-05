@@ -10,6 +10,7 @@ namespace window {
 	void destroy();
 	
 	bool shouldClose();
+	float getDeltaTime();
 	
 	
 }

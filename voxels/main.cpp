@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include <OpenGL/gl.h>
 #include <GLUT/GLUT.h>
 #include <cmath>
@@ -60,35 +59,51 @@ int main(int argc, const char * argv[]) {
 	float t = 0;
 	
 	Chunk chunk;
+	double time = 0;
+	int frames = 0;
+	
+	GLuint index = glGenLists(1);
+	glNewList(index, GL_COMPILE);
+	glBegin(GL_QUADS);
+	
+	FOR3(x, y, z, CHUNK_SIZE) {
+		if (chunk.blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type) {
+			drawBlock(x, y, z, 1, 1, 1);
+		}
+	}
+	
+	glEnd();
+	glEndList();
 	
 	while (!window::shouldClose()) {
+		float delta = window::getDeltaTime();
+		frames++;
+		time += delta;
+		if (time >= 1.0) {
+			time -= 1.0;
+			printf("%d fps\n", frames);
+			frames = 0;
+		}
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		glPushMatrix();
 		gluPerspective(70, 640.f / 480.f, 0.1f, 1000.f);
 		
 		glPushMatrix();
-		gluLookAt(30 * cos(t), 20, 30 * sin(t), 8, 8, 8, 0, 1, 0);
+		// spins the camera around the world (with t being the angle around the world), and makes it look at the center of the world
+		gluLookAt(CHUNK_SIZE * cos(t) + CHUNK_SIZE / 2, CHUNK_SIZE * 1.25f, CHUNK_SIZE * sin(t) + CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, 0, 1, 0);
 		
-		glBegin(GL_QUADS);
-		for (int z = 0; z < 16; z++) {
-			for (int y = 0; y < 16; y++) {
-				for (int x = 0; x < 16; x++) {
-					if (chunk.blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type) {
-						drawBlock(x, y, z, 1, 1, 1);
-					}
-				}
-			}
-		}
+		glCallList(index);
 		
-		glEnd();
 		glPopMatrix();
 		glPopMatrix();
 		
-		t += 0.001f;
+		t += delta;
 		window::update();
 	}
 	
+	glDeleteLists(index, 1);
 	window::destroy();
 	
 	return 0;
