@@ -47,3 +47,7 @@ float window::getDeltaTime() { // only call once per frame
 	g_lastTime = time;
 	return delta;
 }
+
+GLFWwindow* window::getWindow() {
+	return g_window;
+}

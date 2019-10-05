@@ -3,17 +3,15 @@
 #include <random>
 
 Chunk::Chunk() {
-	std::default_random_engine generator;
-	std::uniform_int_distribution<int> distribution(0, 2);
 	blocks = new Block[CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
-	int succ = 0, tot  =0;
-	for (int i = 0; i < CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE; i++) {
-		int r = rand() % 2;
-		if (r) succ++;
-		tot++;
-		blocks[i].type = r;
+	
+	FOR3(x, y, z, CHUNK_SIZE) {
+		float fx = (x - CHUNK_SIZE / 2);
+		float fy = (y - CHUNK_SIZE / 2);
+		float fz = (z - CHUNK_SIZE / 2);
+		bool active = sqrt(fx * fx + fy * fy + fz * fz) < 15;
+		blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type = active;
 	}
-	printf("%d / %d (%f)\n", succ, tot, (float) succ / (float) tot);
 }
 
 Chunk::~Chunk() {

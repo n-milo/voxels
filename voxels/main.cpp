@@ -1,5 +1,6 @@
 #include <iostream>
 #include <OpenGL/gl.h>
+#include <GLFW/glfw3.h>
 #include <GLUT/GLUT.h>
 #include <cmath>
 #include "window.h"
@@ -51,12 +52,29 @@ void drawBlock(int x, int y, int z, float r, float g, float b) {
 
 }
 
+double lastX = -1, lastY = -1;
+double xAng, yAng = 0;
+
+static void cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
+	if (lastX != -1 && lastY != -1 && glfwGetMouseButton(window::getWindow(), GLFW_MOUSE_BUTTON_LEFT)) {
+		double dx = xpos - lastX;
+		double dy = ypos - lastY;
+		xAng += dx * 0.01;
+		yAng += dy * 0.01;
+		if (yAng > M_PI_2) yAng = M_PI_2;
+		if (yAng < -M_PI_2) yAng = -M_PI_2;
+	}
+	
+	lastX = xpos;
+	lastY = ypos;
+}
+
 int main(int argc, const char * argv[]) {
 	window::create(640, 480, "My Game");
+	glfwSetCursorPosCallback(window::getWindow(), cursor_position_callback);
 	
 	glClearColor(1, 0, 0, 1);
 	glEnable(GL_DEPTH_TEST);
-	float t = 0;
 	
 	Chunk chunk;
 	double time = 0;
@@ -92,14 +110,13 @@ int main(int argc, const char * argv[]) {
 		
 		glPushMatrix();
 		// spins the camera around the world (with t being the angle around the world), and makes it look at the center of the world
-		gluLookAt(CHUNK_SIZE * cos(t) + CHUNK_SIZE / 2, CHUNK_SIZE * 1.25f, CHUNK_SIZE * sin(t) + CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, 0, 1, 0);
+		gluLookAt(CHUNK_SIZE * cos(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE * 1.25f + CHUNK_SIZE * 2.5f * sin(yAng), CHUNK_SIZE * sin(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, 0, 1, 0);
 		
 		glCallList(index);
 		
 		glPopMatrix();
 		glPopMatrix();
 		
-		t += delta;
 		window::update();
 	}
 	

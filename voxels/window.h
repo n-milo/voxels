@@ -3,6 +3,8 @@
 
 #include <string>
 
+class GLFWwindow;
+
 namespace window {
 	
 	void create(int width, int height, std::string title);
@@ -11,6 +13,8 @@ namespace window {
 	
 	bool shouldClose();
 	float getDeltaTime();
+	
+	GLFWwindow* getWindow();
 	
 	
 }
