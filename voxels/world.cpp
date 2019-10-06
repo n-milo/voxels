@@ -4,7 +4,7 @@ World::World(int size) {
 	this->size = size;
 	chunks = new Chunk*[size * size * size];
 	FOR3(x, y, z, size) {
-		chunks[x + y * size + z * size * size] = new Chunk();
+		chunks[x + y * size + z * size * size] = new Chunk({x, y, z});
 	}
 }
 
@@ -27,7 +27,7 @@ Block World::getBlock(int x, int y, int z) {
 	int cx = x / CHUNK_SIZE;
 	int cy = y / CHUNK_SIZE;
 	int cz = z / CHUNK_SIZE;
-	if (!inChunkRange(x, y, z)) {
+	if (!inChunkRange(cx, cy, cz)) {
 		return { 0 };
 	}
 	int bx = x % CHUNK_SIZE;

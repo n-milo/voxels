@@ -26,10 +26,15 @@ struct Block {
 	uint8_t type = 0;
 };
 
+struct ChunkCoords {
+	int x, y, z;
+};
+
 struct Chunk {
-	Chunk();
+	Chunk(ChunkCoords coords);
 	~Chunk();
 	Block* blocks;
+	ChunkCoords coords;
 	unsigned displayList = -1;
 	
 	Block getBlock(int x, int y, int z);

@@ -67,9 +67,9 @@ void marching::generate(World *world, int cx, int cy, int cz, std::vector<vec3> 
 	
 	int x, y, z, i;
 	int ix, iy, iz;
-	for (x = cx * 16 - 1; x < cx * 16 + 16; x++) {
-		for (y = cy * 16; y < cy * 16 + 16; y++) {
-			for (z = cz * 16 -1; z < cz * 16 + 16; z++) {
+	for (x = cx * CHUNK_SIZE - 1; x < cx * CHUNK_SIZE + CHUNK_SIZE; x++) {
+		for (y = cy * CHUNK_SIZE - 1; y < cy * CHUNK_SIZE + CHUNK_SIZE; y++) {
+			for (z = cz * CHUNK_SIZE -1; z < cz * CHUNK_SIZE + CHUNK_SIZE; z++) {
 				// Get the values in the 8 neighbours which make up a cube
 				for (i = 0; i < 8; i++) {
 					ix = x + vertexOffset[i][0];

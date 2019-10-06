@@ -29,7 +29,7 @@ int main(int argc, const char * argv[]) {
 	window::create(640, 480, "My Game");
 	//glfwSetCursorPosCallback(window::getWindow(), cursor_position_callback);
 	
-	World *world = new World(2);
+	World *world = new World(1);
 	
 	glClearColor(1, 0, 0, 1);
 	glEnable(GL_DEPTH_TEST);
@@ -37,9 +37,11 @@ int main(int argc, const char * argv[]) {
 	double time = 0;
 	int frames = 0;
 	
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
+//	glEnable(GL_CULL_FACE);
+//	glCullFace(GL_BACK);
+//	glFrontFace(GL_CCW);
+
+	printf("Game running\n");
 	
 	while (!window::shouldClose()) {
 		float delta = window::getDeltaTime();
@@ -66,8 +68,13 @@ int main(int argc, const char * argv[]) {
 			Chunk *chunk = world->getChunk(cx, cy, cz);
 			glPushMatrix();
 			glTranslatef(cx * CHUNK_SIZE, cy * CHUNK_SIZE, cz * CHUNK_SIZE);
-			render::renderChunk(chunk);
+			render::renderChunk(world, chunk);
 			glPopMatrix();
+		}
+		
+		GLenum err;
+		while ((err = glGetError()) != GL_NO_ERROR) {
+			printf("Error %d\n", err);
 		}
 		
 		glPopMatrix();

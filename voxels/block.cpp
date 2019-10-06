@@ -5,7 +5,8 @@
 #define STB_PERLIN_IMPLEMENTATION
 #include <stb_perlin.h>
 
-Chunk::Chunk() {
+Chunk::Chunk(ChunkCoords coords) {
+	this->coords = coords;
 	blocks = new Block[CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
 	
 	FOR3(x, y, z, CHUNK_SIZE) {
