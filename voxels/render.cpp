@@ -99,12 +99,15 @@ unsigned buildList(World *world, Chunk *chunk) {
 			
 			float diffuse = normal.dot(toLight);
 			if (diffuse < 0.0f) diffuse = 0.0f;
-			float ambient = 0.05f + (normal.x * normal.x) * 0.2f;
+			float ambient = 0.1f + (normal.x * normal.x) * 0.2f + (normal.z < 0 ? normal.z * normal.z : 0) * 0.1f;
 			
 			float brightness = ambient + diffuse;
 			if (brightness > 1.0f) brightness = 1.0f;
 			
-			glColor4f(col.r * brightness, col.g * brightness, col.b * brightness, 1);
+//			if (normal.x > 0.8)
+//				glColor4f(1, 0, 1, 1);
+//			else
+				glColor4f(col.r * brightness, col.g * brightness, col.b * brightness, 1);
 			glVertex3f(v.x, v.y, v.z);
 		}
 	}

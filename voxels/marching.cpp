@@ -67,31 +67,26 @@ void marching::generate(World *world, int cx, int cy, int cz, std::vector<vec3> 
 		windingOrder[2] = 0;
 	}
 	
-	int x, y, z, i;
-	int ix, iy, iz;
-	for (x = cx * CHUNK_SIZE - 1; x < cx * CHUNK_SIZE + CHUNK_SIZE; x++) {
-		for (y = cy * CHUNK_SIZE - 1; y < cy * CHUNK_SIZE + CHUNK_SIZE; y++) {
-			for (z = cz * CHUNK_SIZE -1; z < cz * CHUNK_SIZE + CHUNK_SIZE; z++) {
-				Colour colour;
-				int cCount = 0;
-				// Get the values in the 8 neighbours which make up a cube
-				for (i = 0; i < 8; i++) {
-					ix = x + vertexOffset[i][0];
-					iy = y + vertexOffset[i][1];
-					iz = z + vertexOffset[i][2];
-					Block block = world->getBlock(ix, iy, iz);
-					if (block.type) {
-						colour += block.getBlockType().diffuse;
-						cCount++;
-					}
-					cube[i] = block.type ? 1.0f : 0.0f;
-				}
-				
-				// Perform algorithm
-				colour /= cCount;
-				march(x, y, z, world, verts, colour, colours, surface);
+	int i, ix, iy, iz;
+	FOR3_MINMAX(x, y, z, cx * CHUNK_SIZE - 1, cy * CHUNK_SIZE - 1, cz * CHUNK_SIZE - 1, cx * CHUNK_SIZE + CHUNK_SIZE, cy * CHUNK_SIZE + CHUNK_SIZE, cz * CHUNK_SIZE + CHUNK_SIZE) {
+		Colour colour;
+		int cCount = 0;
+		// Get the values in the 8 neighbours which make up a cube
+		for (i = 0; i < 8; i++) {
+			ix = x + vertexOffset[i][0];
+			iy = y + vertexOffset[i][1];
+			iz = z + vertexOffset[i][2];
+			Block block = world->getBlock(ix, iy, iz);
+			if (block.type) {
+				colour += block.getBlockType().diffuse;
+				cCount++;
 			}
+			cube[i] = block.getAmount();
 		}
+		
+		// Perform algorithm
+		colour /= cCount;
+		march(x, y, z, world, verts, colour, colours, surface);
 	}
 }
 

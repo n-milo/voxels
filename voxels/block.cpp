@@ -9,14 +9,18 @@ BlockType Block::getBlockType() {
 	return blocktypes[type];
 }
 
+float Block::getAmount() {
+	return amount / 255.f;
+}
+
 Chunk::Chunk(ChunkCoords coords) {
 	this->coords = coords;
 	blocks = new Block[CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
 	
 	FOR3(x, y, z, CHUNK_SIZE) {
 		float scale = 1.f / 16.f;
-		bool active = stb_perlin_ridge_noise3(x * scale, y * scale, z * scale, 2.0, 0.5, 1.0, 6) < 0.5;
-		BLOCK(x, y, z).type = active;
+		BLOCK(x, y, z).amount = (uint8_t)(stb_perlin_ridge_noise3(x * scale, y * scale, z * scale, 2.0, 0.5, 1.0, 6) * 255);
+		BLOCK(x, y, z).type = y > 16 ? 1 : 2;
 	}
 }
 

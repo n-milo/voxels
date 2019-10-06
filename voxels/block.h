@@ -18,6 +18,12 @@ for (int z = 0; z < mz; z++) \
 for (int y = 0; y < my; y++) \
 for (int x = 0; x < mx; x++)
 
+// ix, iy, iz are the min X, Y, and Z respectively
+#define FOR3_MINMAX(x, y, z, ix, iy, iz, mx, my, mz) \
+for (int z = iz; z < mz; z++) \
+for (int y = iy; y < my; y++) \
+for (int x = ix; x < mx; x++)
+
 #define BLOCK(x, y, z) blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE]
 
 #include <cstdint>
@@ -25,7 +31,11 @@ for (int x = 0; x < mx; x++)
 
 struct Block {
 	uint8_t type = 0;
+	// to get the amount, divide by 255
+	uint8_t amount = 0;
+	
 	BlockType getBlockType();
+	float getAmount();
 };
 
 struct ChunkCoords {
