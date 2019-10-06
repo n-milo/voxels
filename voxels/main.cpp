@@ -6,6 +6,7 @@
 #include "window.h"
 #include "block.h"
 #include "render.h"
+#include "vec3.h"
 
 double lastX = -1, lastY = -1;
 double xAng, yAng = 0;
@@ -26,7 +27,7 @@ static void cursor_position_callback(GLFWwindow *window, double xpos, double ypo
 
 int main(int argc, const char * argv[]) {
 	window::create(640, 480, "My Game");
-	glfwSetCursorPosCallback(window::getWindow(), cursor_position_callback);
+	//glfwSetCursorPosCallback(window::getWindow(), cursor_position_callback);
 	
 	World *world = new World(2);
 	
@@ -40,28 +41,17 @@ int main(int argc, const char * argv[]) {
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 	
-	GLuint index = glGenLists(1);
-	glNewList(index, GL_COMPILE);
-	
-	FOR3(cx, cy, cz, world->getSize()) {
-		Chunk *chunk = world->getChunk(cx, cy, cz);
-		glPushMatrix();
-		glTranslatef(cx * CHUNK_SIZE, cy * CHUNK_SIZE, cz * CHUNK_SIZE);
-		render::renderChunk(chunk);
-		glPopMatrix();
-	}
-	
-	glEndList();
-	
 	while (!window::shouldClose()) {
 		float delta = window::getDeltaTime();
 		frames++;
 		time += delta;
 		if (time >= 1.0) {
 			time -= 1.0;
-			printf("%d fps\n", frames);
+			std::string title = std::to_string(frames) + " fps";
+			glfwSetWindowTitle(window::getWindow(), title.c_str());
 			frames = 0;
 		}
+		xAng += delta * 0.5f;
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
@@ -69,11 +59,16 @@ int main(int argc, const char * argv[]) {
 		gluPerspective(70, 640.f / 480.f, 0.1f, 1000.f);
 		
 		glPushMatrix();
-		// spins the camera around the world (with t being the angle around the world), and makes it look at the center of the world
 		float dist = CHUNK_SIZE;
-		gluLookAt(dist * cos(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE * 1.25f + CHUNK_SIZE * 2.5f * sin(yAng), dist * sin(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, 0, 1, 0);
+		gluLookAt(dist * cos(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE * 1.25f, dist * sin(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, 0, 1, 0);
 		
-		glCallList(index);
+		FOR3(cx, cy, cz, world->getSize()) {
+			Chunk *chunk = world->getChunk(cx, cy, cz);
+			glPushMatrix();
+			glTranslatef(cx * CHUNK_SIZE, cy * CHUNK_SIZE, cz * CHUNK_SIZE);
+			render::renderChunk(chunk);
+			glPopMatrix();
+		}
 		
 		glPopMatrix();
 		glPopMatrix();
@@ -82,7 +77,6 @@ int main(int argc, const char * argv[]) {
 	}
 	
 	delete world;
-	glDeleteLists(index, 1);
 	window::destroy();
 	
 	return 0;

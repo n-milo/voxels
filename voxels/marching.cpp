@@ -1,6 +1,7 @@
 #include "marching.h"
 
 #include "marching_tables.h"
+#include "block.h"
 
 int windingOrder[3] = { 0, 1, 2 };
 float cube[8];
@@ -74,7 +75,7 @@ void marching::generate(World *world, int cx, int cy, int cz, std::vector<vec3> 
 					ix = x + vertexOffset[i][0];
 					iy = y + vertexOffset[i][1];
 					iz = z + vertexOffset[i][2];
-					cube[i] = 0;// world->getBlockAmount(ix, iy, iz);
+					cube[i] = world->getBlock(ix, iy, iz).type ? 1.0f : 0.0f;
 				}
 				
 				// Perform algorithm

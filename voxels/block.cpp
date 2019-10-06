@@ -19,9 +19,9 @@ Chunk::~Chunk() {
 	delete [] blocks;
 }
 
-int Chunk::getType(int x, int y, int z) {
-	if (!inRange(x, y, z)) return 0;
-	return BLOCK(x, y, z).type;
+Block Chunk::getBlock(int x, int y, int z) {
+	if (!inRange(x, y, z)) return { 0 };
+	return BLOCK(x, y, z);
 }
 
 void Chunk::setBlock(Block block, int x, int y, int z) {

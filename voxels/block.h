@@ -23,15 +23,16 @@ for (int x = 0; x < mx; x++)
 #include <cstdint>
 
 struct Block {
-	uint8_t type;
+	uint8_t type = 0;
 };
 
 struct Chunk {
 	Chunk();
 	~Chunk();
 	Block* blocks;
+	unsigned displayList = -1;
 	
-	int getType(int x, int y, int z);
+	Block getBlock(int x, int y, int z);
 	void setBlock(Block block, int x, int y, int z);
 	bool inRange(int x, int y, int z);
 };
@@ -45,6 +46,8 @@ public:
 	~World();
 	Chunk* getChunk(int x, int y, int z);
 	int getSize();
+	Block getBlock(int x, int y, int z);
+	bool inChunkRange(int x, int y, int z);
 	
 };
 

@@ -8,9 +8,10 @@ void color(float r, float g, float b, float c) {
 }
 
 void render::drawBlock(Chunk *chunk, int x, int y, int z, float r, float g, float b) {
-	if (chunk->getType(x + 1, y, z) && chunk->getType(x - 1, y, z) && chunk->getType(x, y + 1, z) && chunk->getType(x, y - 1, z) && chunk->getType(x, y, z + 1) && chunk->getType(x, y, z - 1)) {
+	if (chunk->getBlock(x + 1, y, z).type && chunk->getBlock(x - 1, y, z).type && chunk->getBlock(x, y + 1, z).type && chunk->getBlock(x, y - 1, z).type && chunk->getBlock(x, y, z + 1).type && chunk->getBlock(x, y, z - 1).type) {
 		return;
 	}
+	
 	color(r, g, b, 0.75f);
 	glNormal3f(0.0f, 0.0f, -1.0f);
 	glVertex3f(0.5f + x, -0.5f + y, -0.5f + z);
@@ -52,7 +53,9 @@ void render::drawBlock(Chunk *chunk, int x, int y, int z, float r, float g, floa
 	
 }
 
-void render::renderChunk(Chunk *chunk) {
+unsigned buildList(Chunk *chunk) {
+	GLuint index = glGenLists(1);
+	glNewList(index, GL_COMPILE);
 	glBegin(GL_QUADS);
 	FOR3(x, y, z, CHUNK_SIZE) {
 		if (chunk->blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type) {
@@ -60,4 +63,15 @@ void render::renderChunk(Chunk *chunk) {
 		}
 	}
 	glEnd();
+	glEndList();
+	
+	return index;
+}
+
+void render::renderChunk(Chunk *chunk) {
+	if (chunk->displayList == -1) {
+		chunk->displayList = buildList(chunk);
+	}
+	
+	glCallList(chunk->displayList);
 }
