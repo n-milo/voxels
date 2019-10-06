@@ -2,6 +2,7 @@
 
 #include "marching_tables.h"
 #include "block.h"
+#include "blocktypes.h"
 
 int windingOrder[3] = { 0, 1, 2 };
 float cube[8];
@@ -12,7 +13,7 @@ float getOffset(float v1, float v2, float surface) {
 	return (delta == 0.0f) ? surface : (surface - v1) / delta;
 }
 
-void march(int x, int y, int z, World *world, std::vector<vec3> &verts, float surface) {
+void march(int x, int y, int z, World *world, std::vector<vec3> &verts, Colour blockColour, std::vector<Colour> &colours, float surface) {
 	int i, j, vert;
 	int flagIndex = 0;
 	float offset = 0.0f;
@@ -50,11 +51,12 @@ void march(int x, int y, int z, World *world, std::vector<vec3> &verts, float su
 		for (j = 0; j < 3; j++) {
 			vert = triangleConnectionTable[flagIndex][3 * i + j];
 			verts.push_back(edgeVertex[vert]);
+			colours.push_back(blockColour);
 		}
 	}
 }
 
-void marching::generate(World *world, int cx, int cy, int cz, std::vector<vec3> &verts, float surface) {
+void marching::generate(World *world, int cx, int cy, int cz, std::vector<vec3> &verts, std::vector<Colour> &colours, float surface) {
 	if (surface > 0) {
 		windingOrder[0] = 0;
 		windingOrder[1] = 1;
@@ -70,16 +72,24 @@ void marching::generate(World *world, int cx, int cy, int cz, std::vector<vec3> 
 	for (x = cx * CHUNK_SIZE - 1; x < cx * CHUNK_SIZE + CHUNK_SIZE; x++) {
 		for (y = cy * CHUNK_SIZE - 1; y < cy * CHUNK_SIZE + CHUNK_SIZE; y++) {
 			for (z = cz * CHUNK_SIZE -1; z < cz * CHUNK_SIZE + CHUNK_SIZE; z++) {
+				Colour colour;
+				int cCount = 0;
 				// Get the values in the 8 neighbours which make up a cube
 				for (i = 0; i < 8; i++) {
 					ix = x + vertexOffset[i][0];
 					iy = y + vertexOffset[i][1];
 					iz = z + vertexOffset[i][2];
-					cube[i] = world->getBlock(ix, iy, iz).type ? 1.0f : 0.0f;
+					Block block = world->getBlock(ix, iy, iz);
+					if (block.type) {
+						colour += block.getBlockType().diffuse;
+						cCount++;
+					}
+					cube[i] = block.type ? 1.0f : 0.0f;
 				}
 				
 				// Perform algorithm
-				march(x, y, z, world, verts, surface);
+				colour /= cCount;
+				march(x, y, z, world, verts, colour, colours, surface);
 			}
 		}
 	}

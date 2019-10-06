@@ -5,6 +5,10 @@
 #define STB_PERLIN_IMPLEMENTATION
 #include <stb_perlin.h>
 
+BlockType Block::getBlockType() {
+	return blocktypes[type];
+}
+
 Chunk::Chunk(ChunkCoords coords) {
 	this->coords = coords;
 	blocks = new Block[CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];

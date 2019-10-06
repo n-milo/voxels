@@ -10,6 +10,7 @@
 		93301F5A234967A0000D8D13 /* marching.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F59234967A0000D8D13 /* marching.cpp */; };
 		93301F60234A3512000D8D13 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F5F234A3512000D8D13 /* world.cpp */; };
 		93301F63234A360F000D8D13 /* render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F62234A360F000D8D13 /* render.cpp */; };
+		93301F66234A60BC000D8D13 /* blocktypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F65234A60BC000D8D13 /* blocktypes.cpp */; };
 		93B54E8E2347E6800062241C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B54E8D2347E6800062241C /* main.cpp */; };
 		93B54E962347E70D0062241C /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B54E952347E70D0062241C /* window.cpp */; };
 		93B54E9A2347E95A0062241C /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B54E982347E80D0062241C /* libglfw.3.3.dylib */; };
@@ -37,6 +38,9 @@
 		93301F5F234A3512000D8D13 /* world.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = world.cpp; sourceTree = "<group>"; };
 		93301F61234A360F000D8D13 /* render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
 		93301F62234A360F000D8D13 /* render.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = render.cpp; sourceTree = "<group>"; };
+		93301F64234A60BC000D8D13 /* blocktypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blocktypes.h; sourceTree = "<group>"; };
+		93301F65234A60BC000D8D13 /* blocktypes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = blocktypes.cpp; sourceTree = "<group>"; };
+		93301F67234A6105000D8D13 /* colour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = colour.h; sourceTree = "<group>"; };
 		93B54E8A2347E6800062241C /* voxels */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = voxels; sourceTree = BUILT_PRODUCTS_DIR; };
 		93B54E8D2347E6800062241C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		93B54E942347E70D0062241C /* window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = window.h; sourceTree = "<group>"; };
@@ -92,6 +96,9 @@
 				93301F5F234A3512000D8D13 /* world.cpp */,
 				93301F61234A360F000D8D13 /* render.h */,
 				93301F62234A360F000D8D13 /* render.cpp */,
+				93301F64234A60BC000D8D13 /* blocktypes.h */,
+				93301F65234A60BC000D8D13 /* blocktypes.cpp */,
+				93301F67234A6105000D8D13 /* colour.h */,
 			);
 			path = voxels;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B54E8E2347E6800062241C /* main.cpp in Sources */,
+				93301F66234A60BC000D8D13 /* blocktypes.cpp in Sources */,
 				93B54E962347E70D0062241C /* window.cpp in Sources */,
 				93301F5A234967A0000D8D13 /* marching.cpp in Sources */,
 				93301F63234A360F000D8D13 /* render.cpp in Sources */,

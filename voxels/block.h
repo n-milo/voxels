@@ -21,9 +21,11 @@ for (int x = 0; x < mx; x++)
 #define BLOCK(x, y, z) blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE]
 
 #include <cstdint>
+#include "blocktypes.h"
 
 struct Block {
 	uint8_t type = 0;
+	BlockType getBlockType();
 };
 
 struct ChunkCoords {

@@ -11,6 +11,8 @@
 double lastX = -1, lastY = -1;
 double xAng, yAng = 0;
 
+Colour sky = Colour(0xA1F1FF);
+
 static void cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
 	if (lastX != -1 && lastY != -1 && glfwGetMouseButton(window::getWindow(), GLFW_MOUSE_BUTTON_LEFT)) {
 		double dx = xpos - lastX;
@@ -31,7 +33,7 @@ int main(int argc, const char * argv[]) {
 	
 	World *world = new World(1);
 	
-	glClearColor(1, 0, 0, 1);
+	glClearColor(sky.r, sky.g, sky.b, 1);
 	glEnable(GL_DEPTH_TEST);
 	
 	double time = 0;

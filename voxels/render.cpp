@@ -76,7 +76,8 @@ static const vec3 sun = { 0, 200, 100 };
 
 unsigned buildList(World *world, Chunk *chunk) {
 	std::vector<vec3> verts;
-	marching::generate(world, chunk->coords.x, chunk->coords.y, chunk->coords.z, verts);
+	std::vector<Colour> colours;
+	marching::generate(world, chunk->coords.x, chunk->coords.y, chunk->coords.z, verts, colours);
 	
 	GLuint index = glGenLists(1);
 	glNewList(index, GL_COMPILE);
@@ -93,6 +94,7 @@ unsigned buildList(World *world, Chunk *chunk) {
 		
 		for (int i = 0; i < 3; i++) {
 			vec3 v = i == 0 ? v1 : (i == 1 ? v2 : v3);
+			Colour col = colours[t + i];
 			vec3 toLight = (sun - v).nor();
 			
 			float diffuse = normal.dot(toLight);
@@ -102,11 +104,7 @@ unsigned buildList(World *world, Chunk *chunk) {
 			float brightness = ambient + diffuse;
 			if (brightness > 1.0f) brightness = 1.0f;
 			
-			float r = normal.x * .5f + .5f;
-			float g = normal.y * .5f + .5f;
-			float b = normal.z * .5f + .5f;
-			
-			glColor4f(r * brightness, g * brightness, b * brightness, 1);
+			glColor4f(col.r * brightness, col.g * brightness, col.b * brightness, 1);
 			glVertex3f(v.x, v.y, v.z);
 		}
 	}
