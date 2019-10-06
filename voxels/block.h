@@ -36,5 +36,17 @@ struct Chunk {
 	bool inRange(int x, int y, int z);
 };
 
+class World {
+	Chunk **chunks;
+	int size;
+	
+public:
+	World(int size);
+	~World();
+	Chunk* getChunk(int x, int y, int z);
+	int getSize();
+	
+};
+
 
 #endif

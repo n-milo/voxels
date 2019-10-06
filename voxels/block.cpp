@@ -21,12 +21,12 @@ Chunk::~Chunk() {
 
 int Chunk::getType(int x, int y, int z) {
 	if (!inRange(x, y, z)) return 0;
-	return blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type;
+	return BLOCK(x, y, z).type;
 }
 
 void Chunk::setBlock(Block block, int x, int y, int z) {
 	if (!inRange(x, y, z)) return;
-	blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE] = block;
+	BLOCK(x, y, z) = block;
 }
 
 bool Chunk::inRange(int x, int y, int z) {

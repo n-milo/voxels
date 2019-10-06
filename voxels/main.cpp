@@ -36,7 +36,10 @@ void applyAO(Chunk &chunk, int x, int y, int z, int axis, int s1, int s2, int di
 	//glColor3f(shade, shade, shade);
 }
 
-void drawBlock(Chunk &chunk, int x, int y, int z, float r, float g, float b) {
+void drawBlock(Chunk *chunk, int x, int y, int z, float r, float g, float b) {
+	if (chunk->getType(x + 1, y, z) && chunk->getType(x - 1, y, z) && chunk->getType(x, y + 1, z) && chunk->getType(x, y - 1, z) && chunk->getType(x, y, z + 1) && chunk->getType(x, y, z - 1)) {
+		return;
+	}
 	color(r, g, b, 0.75f);
 	glNormal3f(0.0f, 0.0f, -1.0f);
 	glVertex3f(0.5f + x, -0.5f + y, -0.5f + z);
@@ -99,20 +102,28 @@ int main(int argc, const char * argv[]) {
 	window::create(640, 480, "My Game");
 	glfwSetCursorPosCallback(window::getWindow(), cursor_position_callback);
 	
+	World *world = new World(8);
+	
 	glClearColor(1, 0, 0, 1);
 	glEnable(GL_DEPTH_TEST);
 	
-	Chunk chunk;
 	double time = 0;
 	int frames = 0;
+	
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
 	
 	GLuint index = glGenLists(1);
 	glNewList(index, GL_COMPILE);
 	glBegin(GL_QUADS);
 	
-	FOR3(x, y, z, CHUNK_SIZE) {
-		if (chunk.blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type) {
-			drawBlock(chunk, x, y, z, 1, 1, 1);
+	FOR3(cx, cy, cz, world->getSize()) {
+		Chunk *chunk = world->getChunk(cx, cy, cz);
+		FOR3(x, y, z, CHUNK_SIZE) {
+			if (chunk->blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type) {
+				drawBlock(chunk, x + cx * CHUNK_SIZE, y + cy * CHUNK_SIZE, z + cz * CHUNK_SIZE, 1, 1, 1);
+			}
 		}
 	}
 	
@@ -137,7 +148,7 @@ int main(int argc, const char * argv[]) {
 		
 		glPushMatrix();
 		// spins the camera around the world (with t being the angle around the world), and makes it look at the center of the world
-		float dist = CHUNK_SIZE * cos(yAng);
+		float dist = CHUNK_SIZE;
 		gluLookAt(dist * cos(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE * 1.25f + CHUNK_SIZE * 2.5f * sin(yAng), dist * sin(xAng) + CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, CHUNK_SIZE / 2, 0, 1, 0);
 		
 		glCallList(index);
@@ -148,6 +159,7 @@ int main(int argc, const char * argv[]) {
 		window::update();
 	}
 	
+	delete world;
 	glDeleteLists(index, 1);
 	window::destroy();
 	
