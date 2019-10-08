@@ -45,6 +45,12 @@ int main(int argc, const char * argv[]) {
 
 	printf("Game running\n");
 	
+//	btDefaultCollisionConfiguration *config = new btDefaultCollisionConfiguration;
+//	btCollisionDispatcher *dispatcher = new btCollisionDispatcher(config);
+//	btBroadphaseInterface *overlappingPairCache = new btDbvtBroadphase();
+//	btSequentialImpulseConstraintSolver *solver = new btSequentialImpulseConstraintSolver;
+//	btDiscreteDynamicsWorld *dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, config);
+	
 	while (!window::shouldClose()) {
 		float delta = window::getDeltaTime();
 		frames++;
@@ -52,7 +58,7 @@ int main(int argc, const char * argv[]) {
 		if (time >= 1.0) {
 			time -= 1.0;
 			std::string title = std::to_string(frames) + " fps";
-			glfwSetWindowTitle(window::getWindow(), title.c_str());
+//			glfwSetWindowTitle(window::getWindow(), title.c_str());
 			frames = 0;
 		}
 		xAng += delta * 0.5f;

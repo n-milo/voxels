@@ -64,6 +64,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		93301F6E234C1E0D000D8D13 /* world */ = {
+			isa = PBXGroup;
+			children = (
+				93B54E9D2347F02E0062241C /* block.h */,
+				93B54E9E2347F02E0062241C /* block.cpp */,
+				93301F64234A60BC000D8D13 /* blocktypes.h */,
+				93301F65234A60BC000D8D13 /* blocktypes.cpp */,
+				93301F5F234A3512000D8D13 /* world.cpp */,
+			);
+			path = world;
+			sourceTree = "<group>";
+		};
+		93301F6F234C1E11000D8D13 /* render */ = {
+			isa = PBXGroup;
+			children = (
+				93B54E942347E70D0062241C /* window.h */,
+				93B54E952347E70D0062241C /* window.cpp */,
+				93301F58234967A0000D8D13 /* marching.h */,
+				93301F59234967A0000D8D13 /* marching.cpp */,
+				93301F5E234A3341000D8D13 /* marching_tables.h */,
+				93301F61234A360F000D8D13 /* render.h */,
+				93301F62234A360F000D8D13 /* render.cpp */,
+			);
+			path = render;
+			sourceTree = "<group>";
+		};
+		93301F70234C1E16000D8D13 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				93301F5B234A32B0000D8D13 /* vec3.h */,
+				93301F67234A6105000D8D13 /* colour.h */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
 		93B54E812347E67F0062241C = {
 			isa = PBXGroup;
 			children = (
@@ -84,21 +119,10 @@
 		93B54E8C2347E6800062241C /* voxels */ = {
 			isa = PBXGroup;
 			children = (
+				93301F70234C1E16000D8D13 /* util */,
+				93301F6F234C1E11000D8D13 /* render */,
+				93301F6E234C1E0D000D8D13 /* world */,
 				93B54E8D2347E6800062241C /* main.cpp */,
-				93B54E942347E70D0062241C /* window.h */,
-				93B54E952347E70D0062241C /* window.cpp */,
-				93B54E9D2347F02E0062241C /* block.h */,
-				93B54E9E2347F02E0062241C /* block.cpp */,
-				93301F58234967A0000D8D13 /* marching.h */,
-				93301F59234967A0000D8D13 /* marching.cpp */,
-				93301F5B234A32B0000D8D13 /* vec3.h */,
-				93301F5E234A3341000D8D13 /* marching_tables.h */,
-				93301F5F234A3512000D8D13 /* world.cpp */,
-				93301F61234A360F000D8D13 /* render.h */,
-				93301F62234A360F000D8D13 /* render.cpp */,
-				93301F64234A60BC000D8D13 /* blocktypes.h */,
-				93301F65234A60BC000D8D13 /* blocktypes.cpp */,
-				93301F67234A6105000D8D13 /* colour.h */,
 			);
 			path = voxels;
 			sourceTree = "<group>";
@@ -295,7 +319,10 @@
 			buildSettings = {
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					"/Users/nikola/Documents/Xcode\\ Projects/voxels/voxels/bullet/**",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/glfw/3.3/lib,
@@ -310,7 +337,10 @@
 			buildSettings = {
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					"/Users/nikola/Documents/Xcode\\ Projects/voxels/voxels/bullet/**",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/glfw/3.3/lib,
