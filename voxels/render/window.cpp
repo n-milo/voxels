@@ -23,6 +23,7 @@ void window::create(int width, int height, std::string title) {
 	
 	glfwSwapInterval(1);
 	glfwSetKeyCallback(g_window, g_key_callback);
+	glfwSetInputMode(g_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	
 	glfwMakeContextCurrent(g_window);
 }

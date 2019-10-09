@@ -42,13 +42,14 @@ void render::drawBlock(Chunk *chunk, int x, int y, int z, float r, float g, floa
 	glVertex3f(-0.5f + x, 0.5f + y, 0.5f + z);
 	glVertex3f(-0.5f + x, 0.5f + y, -0.5f + z);
 	
-	color(r, g, b, 1.f);
+	color(r, g, b, 0.4f);
 	glNormal3f(0.0f, -1.0f, 0.0f);
 	glVertex3f(-0.5f + x, -0.5f + y, -0.5f + z);
 	glVertex3f(0.5f + x, -0.5f + y, -0.5f + z);
 	glVertex3f(0.5f + x, -0.5f + y, 0.5f + z);
 	glVertex3f(-0.5f + x, -0.5f + y, 0.5f + z);
 	
+	color(r, g, b, 1.f);
 	glNormal3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(0.5f + x, 0.5f + y, -0.5f + z);
 	glVertex3f(-0.5f + x, 0.5f + y, -0.5f + z);
@@ -57,13 +58,15 @@ void render::drawBlock(Chunk *chunk, int x, int y, int z, float r, float g, floa
 	
 }
 
-unsigned buildListOld(Chunk *chunk) {
+unsigned buildListVoxels(World *world, Chunk *chunk) {
 	GLuint index = glGenLists(1);
 	glNewList(index, GL_COMPILE);
 	glBegin(GL_QUADS);
 	FOR3(x, y, z, CHUNK_SIZE) {
-		if (chunk->blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE].type) {
-			render::drawBlock(chunk, x, y, z, 1, 1, 1);
+		Block block = chunk->blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE];
+		if (block.type) {
+			Colour blockColour = block.getBlockType().diffuse;
+			render::drawBlock(chunk, x, y, z, blockColour.r, blockColour.g, blockColour.b);
 		}
 	}
 	glEnd();
@@ -74,7 +77,7 @@ unsigned buildListOld(Chunk *chunk) {
 
 static const vec3 sun = { 0, 200, 100 };
 
-unsigned buildList(World *world, Chunk *chunk) {
+unsigned buildListMarching(World *world, Chunk *chunk) {
 	std::vector<vec3> verts;
 	std::vector<Colour> colours;
 	marching::generate(world, chunk->coords.x, chunk->coords.y, chunk->coords.z, verts, colours);
@@ -120,7 +123,7 @@ unsigned buildList(World *world, Chunk *chunk) {
 
 void render::renderChunk(World *world, Chunk *chunk) {
 	if (chunk->displayList == -1) {
-		chunk->displayList = buildList(world, chunk);
+		chunk->displayList = buildListVoxels(world, chunk);
 	}
 	
 	glCallList(chunk->displayList);

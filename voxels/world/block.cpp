@@ -19,8 +19,9 @@ Chunk::Chunk(ChunkCoords coords) {
 	
 	FOR3(x, y, z, CHUNK_SIZE) {
 		float scale = 1.f / 16.f;
-		BLOCK(x, y, z).amount = (uint8_t)(stb_perlin_ridge_noise3(x * scale, y * scale, z * scale, 2.0, 0.5, 1.0, 6) * 255);
-		BLOCK(x, y, z).type = y > 16 ? 1 : 2;
+		float amt = stb_perlin_ridge_noise3(x * scale, y * scale, z * scale, 2.0, 0.5, 1.0, 6);
+		BLOCK(x, y, z).amount = (uint8_t)(amt * 255);
+		BLOCK(x, y, z).type = amt > 0.5 ? (y > 16 ? 1 : 2) : 0;
 	}
 }
 
@@ -39,5 +40,5 @@ void Chunk::setBlock(Block block, int x, int y, int z) {
 }
 
 bool Chunk::inRange(int x, int y, int z) {
-	return x > 0 && y > 0 && z > 0 && x <= CHUNK_SIZE && y <= CHUNK_SIZE && z <= CHUNK_SIZE;
+	return x >= 0 && y >= 0 && z >= 0 && x < CHUNK_SIZE && y < CHUNK_SIZE && z < CHUNK_SIZE;
 }

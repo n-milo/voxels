@@ -11,6 +11,8 @@
 		93301F60234A3512000D8D13 /* world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F5F234A3512000D8D13 /* world.cpp */; };
 		93301F63234A360F000D8D13 /* render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F62234A360F000D8D13 /* render.cpp */; };
 		93301F66234A60BC000D8D13 /* blocktypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F65234A60BC000D8D13 /* blocktypes.cpp */; };
+		93301F80234C21B1000D8D13 /* resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F7E234C21B0000D8D13 /* resources.cpp */; };
+		93301F83234C2363000D8D13 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93301F82234C2363000D8D13 /* camera.cpp */; };
 		93B54E8E2347E6800062241C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B54E8D2347E6800062241C /* main.cpp */; };
 		93B54E962347E70D0062241C /* window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B54E952347E70D0062241C /* window.cpp */; };
 		93B54E9A2347E95A0062241C /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B54E982347E80D0062241C /* libglfw.3.3.dylib */; };
@@ -41,6 +43,10 @@
 		93301F64234A60BC000D8D13 /* blocktypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blocktypes.h; sourceTree = "<group>"; };
 		93301F65234A60BC000D8D13 /* blocktypes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = blocktypes.cpp; sourceTree = "<group>"; };
 		93301F67234A6105000D8D13 /* colour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = colour.h; sourceTree = "<group>"; };
+		93301F7E234C21B0000D8D13 /* resources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resources.cpp; sourceTree = "<group>"; };
+		93301F7F234C21B0000D8D13 /* resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
+		93301F81234C2363000D8D13 /* camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
+		93301F82234C2363000D8D13 /* camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
 		93B54E8A2347E6800062241C /* voxels */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = voxels; sourceTree = BUILT_PRODUCTS_DIR; };
 		93B54E8D2347E6800062241C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		93B54E942347E70D0062241C /* window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = window.h; sourceTree = "<group>"; };
@@ -86,6 +92,8 @@
 				93301F5E234A3341000D8D13 /* marching_tables.h */,
 				93301F61234A360F000D8D13 /* render.h */,
 				93301F62234A360F000D8D13 /* render.cpp */,
+				93301F81234C2363000D8D13 /* camera.h */,
+				93301F82234C2363000D8D13 /* camera.cpp */,
 			);
 			path = render;
 			sourceTree = "<group>";
@@ -97,6 +105,15 @@
 				93301F67234A6105000D8D13 /* colour.h */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		93301F77234C1F87000D8D13 /* io */ = {
+			isa = PBXGroup;
+			children = (
+				93301F7E234C21B0000D8D13 /* resources.cpp */,
+				93301F7F234C21B0000D8D13 /* resources.h */,
+			);
+			path = io;
 			sourceTree = "<group>";
 		};
 		93B54E812347E67F0062241C = {
@@ -119,6 +136,7 @@
 		93B54E8C2347E6800062241C /* voxels */ = {
 			isa = PBXGroup;
 			children = (
+				93301F77234C1F87000D8D13 /* io */,
 				93301F70234C1E16000D8D13 /* util */,
 				93301F6F234C1E11000D8D13 /* render */,
 				93301F6E234C1E0D000D8D13 /* world */,
@@ -196,9 +214,11 @@
 				93301F66234A60BC000D8D13 /* blocktypes.cpp in Sources */,
 				93B54E962347E70D0062241C /* window.cpp in Sources */,
 				93301F5A234967A0000D8D13 /* marching.cpp in Sources */,
+				93301F83234C2363000D8D13 /* camera.cpp in Sources */,
 				93301F63234A360F000D8D13 /* render.cpp in Sources */,
 				93B54E9F2347F02E0062241C /* block.cpp in Sources */,
 				93301F60234A3512000D8D13 /* world.cpp in Sources */,
+				93301F80234C21B1000D8D13 /* resources.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
