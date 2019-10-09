@@ -11,7 +11,6 @@ Camera::Camera(float _fov, float _aspect, vec3 _pos) : fov(_fov), aspect(_aspect
 }
 
 Camera::~Camera() {
-	
 }
 
 vec3 move(float amt, int dir, float rot) {
