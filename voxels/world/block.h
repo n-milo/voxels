@@ -31,11 +31,7 @@ for (int x = ix; x < mx; x++)
 
 struct Block {
 	uint8_t type = 0;
-	// to get the amount, divide by 255
-	uint8_t amount = 0;
-	
 	BlockType getBlockType();
-	float getAmount();
 };
 
 struct ChunkCoords {
@@ -52,8 +48,9 @@ struct Chunk {
 	ChunkCoords coords;
 	unsigned displayList = -1;
 	
-	Block getBlock(int x, int y, int z);
+	Block block(int x, int y, int z);
 	void setBlock(Block block, int x, int y, int z);
+	void setType(int type, int x, int y, int z);
 	bool inRange(int x, int y, int z);
 };
 
@@ -65,8 +62,10 @@ public:
 	World(int size);
 	~World();
 	Chunk* getChunk(int x, int y, int z);
+	void generate();
 	int getSize();
-	Block getBlock(int x, int y, int z);
+	Block block(int x, int y, int z);
+	void setType(int type, int x, int y, int z);
 	bool inBlockRange(int x, int y, int z);
 	bool inChunkRange(int x, int y, int z);
 	

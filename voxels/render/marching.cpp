@@ -76,12 +76,12 @@ void marching::generate(World *world, int cx, int cy, int cz, std::vector<vec3> 
 			ix = x + vertexOffset[i][0];
 			iy = y + vertexOffset[i][1];
 			iz = z + vertexOffset[i][2];
-			Block block = world->getBlock(ix, iy, iz);
+			Block block = world->block(ix, iy, iz);
 			if (block.type) {
 				colour += block.getBlockType().diffuse;
 				cCount++;
 			}
-			cube[i] = block.getAmount();
+			cube[i] = 0;//block.getAmount();
 		}
 		
 		// Perform algorithm

@@ -33,9 +33,9 @@ int getAO(Chunk *chunk, int x, int y, int z, int axis, int a, int b, int sign, i
 		if (i == 1 || i == 2) // only check b for side2 or corner
 			checkCoords[i * 3 + b] = bDir;
 	}
-	side1  = chunk->getBlock(x + checkCoords[0], y + checkCoords[1], z + checkCoords[2]);
-	side2  = chunk->getBlock(x + checkCoords[3], y + checkCoords[4], z + checkCoords[5]);
-	corner = chunk->getBlock(x + checkCoords[6], y + checkCoords[7], z + checkCoords[8]);
+	side1  = chunk->block(x + checkCoords[0], y + checkCoords[1], z + checkCoords[2]);
+	side2  = chunk->block(x + checkCoords[3], y + checkCoords[4], z + checkCoords[5]);
+	corner = chunk->block(x + checkCoords[6], y + checkCoords[7], z + checkCoords[8]);
 	return vertexAO(side1.type, side2.type, corner.type);
 }
 
@@ -58,7 +58,7 @@ void drawFace(Chunk *chunk, int face, int x, int y, int z, Colour colour) {
 	checkBlock[axis] = positions[axis] + sign;
 	checkBlock[a] = positions[a];
 	checkBlock[b] = positions[b];
-	if (chunk->getBlock(checkBlock[0], checkBlock[1], checkBlock[2]).type) {
+	if (chunk->block(checkBlock[0], checkBlock[1], checkBlock[2]).type) {
 		return;
 	}
 	

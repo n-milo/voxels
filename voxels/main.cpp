@@ -35,6 +35,7 @@ int main(int argc, const char * argv[]) {
 	glfwSetCursorPosCallback(window::getWindow(), cursor_position_callback);
 	
 	World *world = new World(2);
+	world->generate();
 	
 	glClearColor(sky.r, sky.g, sky.b, 1);
 	glEnable(GL_DEPTH_TEST);
