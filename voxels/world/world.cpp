@@ -4,7 +4,7 @@ World::World(int size) {
 	this->size = size;
 	chunks = new Chunk*[size * size * size];
 	FOR3(x, y, z, size) {
-		chunks[x + y * size + z * size * size] = new Chunk({x, y, z});
+		chunks[x + y * size + z * size * size] = new Chunk(this, {x, y, z});
 	}
 }
 
@@ -19,11 +19,18 @@ Chunk* World::getChunk(int x, int y, int z) {
 	return chunks[x + y * size + z * size * size];
 }
 
+bool World::inBlockRange(int x, int y, int z) {
+	return x >= 0 && y >= 0 && z >= 0 && x < size * CHUNK_SIZE && y < size * CHUNK_SIZE && z < size * CHUNK_SIZE;
+}
+
 bool World::inChunkRange(int x, int y, int z) {
 	return x >= 0 && y >= 0 && z >= 0 && x < size && y < size && z < size;
 }
 
 Block World::getBlock(int x, int y, int z) {
+	if (!inBlockRange(x, y, z)) {
+		return { 0 };
+	}
 	int cx = x / CHUNK_SIZE;
 	int cy = y / CHUNK_SIZE;
 	int cz = z / CHUNK_SIZE;

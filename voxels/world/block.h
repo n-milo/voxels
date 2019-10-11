@@ -42,9 +42,12 @@ struct ChunkCoords {
 	int x, y, z;
 };
 
+class World;
+
 struct Chunk {
-	Chunk(ChunkCoords coords);
+	Chunk(World *world, ChunkCoords coords);
 	~Chunk();
+	World* world;
 	Block* blocks;
 	ChunkCoords coords;
 	unsigned displayList = -1;
@@ -64,6 +67,7 @@ public:
 	Chunk* getChunk(int x, int y, int z);
 	int getSize();
 	Block getBlock(int x, int y, int z);
+	bool inBlockRange(int x, int y, int z);
 	bool inChunkRange(int x, int y, int z);
 	
 };

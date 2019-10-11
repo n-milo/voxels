@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <OpenGL/gl.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
@@ -20,6 +21,9 @@ static void cursor_position_callback(GLFWwindow *window, double xpos, double ypo
 		double dy = ypos - lastY;
 		camera->rotation.y -= dx * .5f;
 		camera->rotation.x -= dy * .5f;
+		
+		if (camera->rotation.x < -90) camera->rotation.x = -90;
+		if (camera->rotation.x > 90) camera->rotation.x = 90;
 	}
 	
 	lastX = xpos;
@@ -30,7 +34,7 @@ int main(int argc, const char * argv[]) {
 	window::create(640, 480, "My Game");
 	glfwSetCursorPosCallback(window::getWindow(), cursor_position_callback);
 	
-	World *world = new World(1);
+	World *world = new World(2);
 	
 	glClearColor(sky.r, sky.g, sky.b, 1);
 	glEnable(GL_DEPTH_TEST);
