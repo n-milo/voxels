@@ -53,15 +53,16 @@ void drawFace(Chunk *chunk, int face, int x, int y, int z, Colour colour) {
 	else if (axis == 1) { a = 2; b = 0; }
 	else { a = 1; b = 0; }
 	
+	// only render if this face is touching an air block
 	int checkBlock[3];
 	checkBlock[axis] = positions[axis] + sign;
 	checkBlock[a] = positions[a];
 	checkBlock[b] = positions[b];
-	
 	if (chunk->getBlock(checkBlock[0], checkBlock[1], checkBlock[2]).type) {
 		return;
 	}
 	
+	// calculate basic shading
 	float shade;
 	if (axis == 0) shade = .5f;
 	else if (axis == 1) shade = sign > 0 ? 1.f : .4f;
@@ -100,6 +101,7 @@ void drawFace(Chunk *chunk, int face, int x, int y, int z, Colour colour) {
 		verts[i * 3 + b] = bDir * 0.5f + positions[b];
 	}
 	
+	// send the data to opengl
 	for (int i = 0; i < 4; i++) {
 		glColor3f(colours[i * 3 + 0], colours[i * 3 + 1], colours[i * 3 + 2]);
 		glVertex3f(verts[i * 3 + 0], verts[i * 3 + 1], verts[i * 3 + 2]);
@@ -112,7 +114,7 @@ void render::drawBlock(Chunk *chunk, int x, int y, int z, Colour colour) {
 	}
 }
 
-unsigned buildListVoxels(World *world, Chunk *chunk) {
+unsigned buildList(World *world, Chunk *chunk) {
 	GLuint index = glGenLists(1);
 	glNewList(index, GL_COMPILE);
 	glBegin(GL_QUADS);
@@ -128,55 +130,9 @@ unsigned buildListVoxels(World *world, Chunk *chunk) {
 	return index;
 }
 
-static const vec3 sun = { 0, 200, 100 };
-
-unsigned buildListMarching(World *world, Chunk *chunk) {
-	std::vector<vec3> verts;
-	std::vector<Colour> colours;
-	marching::generate(world, chunk->coords.x, chunk->coords.y, chunk->coords.z, verts, colours);
-	
-	GLuint index = glGenLists(1);
-	glNewList(index, GL_COMPILE);
-	glBegin(GL_TRIANGLES);
-	
-	for (int t = 0; t < verts.size(); t += 3) {
-		vec3 v1 = verts[t + 0];
-		vec3 v2 = verts[t + 1];
-		vec3 v3 = verts[t + 2];
-		
-		vec3 p = v2 - v1;
-		vec3 q = v3 - v1;
-		vec3 normal = p.cross(q).nor();
-		
-		for (int i = 0; i < 3; i++) {
-			vec3 v = i == 0 ? v1 : (i == 1 ? v2 : v3);
-			Colour col = colours[t + i];
-			vec3 toLight = (sun - v).nor();
-			
-			float diffuse = normal.dot(toLight);
-			if (diffuse < 0.0f) diffuse = 0.0f;
-			float ambient = 0.1f + (normal.x * normal.x) * 0.2f + (normal.z < 0 ? normal.z * normal.z : 0) * 0.1f;
-			
-			float brightness = ambient + diffuse;
-			if (brightness > 1.0f) brightness = 1.0f;
-			
-//			if (normal.x > 0.8)
-//				glColor4f(1, 0, 1, 1);
-//			else
-				glColor4f(col.r * brightness, col.g * brightness, col.b * brightness, 1);
-			glVertex3f(v.x, v.y, v.z);
-		}
-	}
-	
-	glEnd();
-	glEndList();
-	
-	return index;
-}
-
 void render::renderChunk(World *world, Chunk *chunk) {
 	if (chunk->displayList == -1) {
-		chunk->displayList = buildListVoxels(world, chunk);
+		chunk->displayList = buildList(world, chunk);
 	}
 	
 	glCallList(chunk->displayList);
