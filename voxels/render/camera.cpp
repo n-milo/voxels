@@ -18,8 +18,8 @@ vec3 move(float amt, int dir, float rot) {
 }
 
 void Camera::update(float delta) {
-	float speed = 15 * delta;
-	float flyspeed = 15 * delta;
+	float speed = 50 * delta;
+	float flyspeed = 50 * delta;
 	
 	bool up = glfwGetKey(window::getWindow(), GLFW_KEY_W), down = glfwGetKey(window::getWindow(), GLFW_KEY_S), left = glfwGetKey(window::getWindow(), GLFW_KEY_A), right = glfwGetKey(window::getWindow(), GLFW_KEY_D);
 	

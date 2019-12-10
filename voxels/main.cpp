@@ -34,7 +34,7 @@ int main(int argc, const char * argv[]) {
 	window::create(640, 480, "My Game");
 	glfwSetCursorPosCallback(window::getWindow(), cursor_position_callback);
 	
-	World *world = new World(2);
+	World *world = new World(8);
 	world->generate();
 	
 	glClearColor(sky.r, sky.g, sky.b, 1);
@@ -55,7 +55,7 @@ int main(int argc, const char * argv[]) {
 //	btSequentialImpulseConstraintSolver *solver = new btSequentialImpulseConstraintSolver;
 //	btDiscreteDynamicsWorld *dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, config);
 	
-	camera = new Camera(70, 640.f / 480.f, vec3(10, 10, 50));
+	camera = new Camera(70, 640.f / 480.f, vec3(10, 20, 50));
 	std::cout << "Hello" << std::endl;
 	
 	while (!window::shouldClose()) {

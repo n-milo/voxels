@@ -27,7 +27,14 @@ for (int x = ix; x < mx; x++)
 #define BLOCK(x, y, z) blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE]
 
 #include <cstdint>
-#include "blocktypes.h"
+#include "colour.h"
+
+struct BlockType {
+	int id;
+	Colour diffuse;
+};
+
+extern BlockType blocktypes[];
 
 struct Block {
 	uint8_t type = 0;

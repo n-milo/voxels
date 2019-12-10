@@ -2,7 +2,6 @@
 
 #include "marching_tables.h"
 #include "block.h"
-#include "blocktypes.h"
 
 int windingOrder[3] = { 0, 1, 2 };
 float cube[8];
